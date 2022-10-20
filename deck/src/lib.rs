@@ -15,7 +15,7 @@ use thiserror::Error;
 use rand::rngs::StdRng;
 
 #[cfg(feature = "wasm")]
-extern crate wasm_bindgen;
+use wasm_bindgen::prelude::*;
 
 #[cfg(feature = "wasm")]
 extern crate wee_alloc;
@@ -501,7 +501,6 @@ impl<U: Clone + PartialEq + Eq + ToBytes + BorshSerialize + BorshDeserialize> Pu
         }
     }
 
-    #[cfg_attr(feature = "npm", wasm_bindgen)]
     pub fn reveal(
         &mut self,
         calling_player_idx: usize,
@@ -616,7 +615,7 @@ pub fn keygen<U: Clone + PartialEq + Eq + ToBytes + BorshSerialize + BorshDeseri
 
 // stuff that players do client-side
 impl<U: Clone + PartialEq + Eq + ToBytes + BorshSerialize + BorshDeserialize> DeckPlayerState<U> {
-    #[cfg_attr(feature = "npm", wasm_bindgen(constructor))]
+    #[cfg_attr(feature = "npm", wasm_bindgen())]
     pub fn new(
         id: U,
         pk: PublicKey,
@@ -716,7 +715,6 @@ impl<U: Clone + PartialEq + Eq + ToBytes + BorshSerialize + BorshDeserialize> De
         &mut self,
         card_idx: usize,
     ) -> Result<CardValue, DeckError> {
-        let mut rng = rand::thread_rng();
         match self.cards[card_idx] {
             Card::Masked(ref masked_card) => {
                 let own_reveal_token = self.compute_reveal_token(masked_card)?;
