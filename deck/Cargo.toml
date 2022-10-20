@@ -14,5 +14,23 @@ ark-bn254 = "0.3.0"
 ark-serialize = "0.3.0"
 ark-serialize-derive = "0.3.0"
 proof-essentials = { git = "https://github.com/Sladuca/proof-toolbox.git" }
-borsh = "0.9.3"
+borsh = { version = "0.9.3" }
 thiserror = "1"
+wasm-bindgen = "0.2.63"
+wee_alloc = { version = "0.4.5", optional = true }
+console_error_panic_hook = { version = "0.1.6", optional = true }
+rand = "0.8.5"
+
+[dev-dependencies]
+wasm-bindgen-test = "0.3.19"
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[features]
+default = []
+wasm = ["dep:wee_alloc"]
+npm = ["wasm", "console_error_panic_hook"]
+
+[profile.wasm]
+op-level = "s"
